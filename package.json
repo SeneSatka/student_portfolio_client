@@ -10,6 +10,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@senka/logger": "^1.0.9",
+    "@senka/text-to-ascii": "^1.0.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
