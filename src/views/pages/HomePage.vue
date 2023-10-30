@@ -2,7 +2,7 @@
 import { inject } from 'vue'
 let studentData = inject('studentData')
 if (studentData && localStorage.getItem('token')) {
-  window.location.href = '/portfilio'
+  window.location.href = '/portfolio'
 }
 </script>
 <template>

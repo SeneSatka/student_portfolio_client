@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import MessagesViewer from '../../components/MessagesViewer.vue'
 if (localStorage.getItem('token')) window.location.href = '/'
 
 const email = ref('')
@@ -37,7 +38,7 @@ const login = async (e) => {
             })
           localStorage.setItem('token', d.token)
           setTimeout(() => {
-            window.location.href = '/portfilio'
+            window.location.href = '/portfolio'
           }, 1000)
         } else {
           if (d.errors) {
@@ -58,16 +59,13 @@ const closeMessage = (i) => {
 }
 </script>
 <template>
-  <div class="messages">
-    <div class="error" v-for="(error, index) in errors" :key="index">
-      {{ error }}
-      <i class="fa-solid fa-xmark" style="color: #ffffff" @click="closeError(index)"></i>
-    </div>
-    <div class="message" v-for="(message, index) in messages" :key="index">
-      {{ message }}
-      <i class="fa-solid fa-xmark" style="color: #ffffff" @click="closeMessage(index)"></i>
-    </div>
-  </div>
+  <MessagesViewer
+    :messages="messages"
+    :errors="errors"
+    :close-error="closeError"
+    :close-message="closeMessage"
+    v-show="messages.length > 0 || errors.length > 0"
+  />
 
   <div class="login">
     <form>

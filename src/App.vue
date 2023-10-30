@@ -3,14 +3,19 @@ import { RouterView } from 'vue-router'
 import NavBar from './views/static/NavBar.vue'
 import { provide, ref } from 'vue'
 import { ascii } from '@senka/text-to-ascii'
-// import { ascii } from '@senka/text-to-ascii'
-const userData = ref(false)
-const useUserData = async (token) =>
-  await fetch(`http://localhost:3000/students?token=${token}`, {}).then((d) =>
-    d.json().then((d) => (userData.value = d.data))
+
+const studentData = ref(false)
+const useStudentData = async (token) =>
+  await fetch(`http://localhost:3000/students?token=${token}`).then((d) =>
+    d.json().then((d) => {
+      if (d.errors) {
+        localStorage.removeItem('token')
+        location.reload()
+      } else studentData.value = d.data
+    })
   )
-if (localStorage.getItem('token')) useUserData(localStorage.getItem('token'))
-provide('studentData', userData)
+if (localStorage.getItem('token')) useStudentData(localStorage.getItem('token'))
+provide('studentData', studentData)
 
 console.log(`%c${ascii('>>  SeneSatka  <<')}`, 'color:green')
 let i = 0

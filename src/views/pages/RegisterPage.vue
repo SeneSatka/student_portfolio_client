@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import MessagesViewer from '../../components/MessagesViewer.vue'
 if (localStorage.getItem('token')) window.location.href = '/'
 
 const email = ref('')
@@ -21,7 +22,6 @@ const register = async () => {
   Object.keys(data).forEach((key) => {
     params.append(key, data[key])
   })
-  // const contentLength = new Blob([data]).size
   await fetch('http://localhost:3000/students', {
     method: 'POST',
     mode: 'cors',
@@ -41,7 +41,7 @@ const register = async () => {
             })
           localStorage.setItem('token', d.data.token)
           setTimeout(() => {
-            window.location.href = '/portfilio'
+            window.location.href = '/portfolio'
           }, 1000)
         } else {
           if (d.errors) {
@@ -62,16 +62,13 @@ const closeMessage = (i) => {
 }
 </script>
 <template>
-  <div class="messages">
-    <div class="error" v-for="(error, index) in errors" :key="index">
-      {{ error }}
-      <i class="fa-solid fa-xmark" style="color: #ffffff" @click="closeError(index)"></i>
-    </div>
-    <div class="message" v-for="(message, index) in messages" :key="index">
-      {{ message }}
-      <i class="fa-solid fa-xmark" style="color: #ffffff" @click="closeMessage(index)"></i>
-    </div>
-  </div>
+  <MessagesViewer
+    :messages="messages"
+    :errors="errors"
+    :close-error="closeError"
+    :close-message="closeMessage"
+    v-show="messages.length > 0 || errors.length > 0"
+  />
 
   <div class="register">
     <form>
@@ -205,55 +202,6 @@ form {
 input:focus ~ label,
 input:valid ~ label {
   top: -10px;
-}
-.messages {
-  flex-wrap: wrap;
-  width: 400px;
-  margin: auto;
-  height: auto;
-
-  padding: 0 10px;
-  padding-top: 10px;
-  gap: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.error {
-  display: flex;
-  position: static;
-  width: 300px;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  background-color: rgba(255, 0, 0, 0.4);
-  backdrop-filter: blur(20px);
-  padding: 10px;
-  border-radius: 10px;
-  transition: all 0.4s;
-}
-.error:hover {
-  background-color: rgba(255, 0, 0, 0.6);
-}
-.message {
-  display: flex;
-  position: static;
-  width: 300px;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  background-color: rgba(0, 255, 0, 0.4);
-  backdrop-filter: blur(20px);
-  padding: 10px;
-  border-radius: 10px;
-  transition: all 0.4s;
-}
-.message:hover {
-  background-color: rgba(0, 255, 0, 0.6);
-}
-.error i,
-.message i {
-  margin-left: auto;
 }
 @media screen and (max-width: 400px) {
   form {

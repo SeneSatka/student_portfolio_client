@@ -9,9 +9,9 @@ const router = createRouter({
       component: () => import('../views/pages/HomePage.vue')
     },
     {
-      path: '/portfilio',
-      name: 'portfilio',
-      component: () => import('../views/pages/PortfilioPage.vue')
+      path: '/portfolio/:process',
+      name: 'portfolio',
+      component: () => import('../views/pages/PortfolioPage.vue')
     },
     {
       path: '/register',
